@@ -1,24 +1,49 @@
-import { useSelector } from "react-redux";
-import Contact from "../Contact/Contact";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import {
+  selectError,
+  selectFilteredContacts,
+  selectLoading,
+} from "../../redux/selectors";
+import { fetchContacts, deleteContact } from "../../redux/contactsOps";
+
 import css from "./ContactList.module.css";
-import { selectContacts } from "../../redux/contactsSlice";
-import { selectNameFilter } from "../../redux/filtersSlice";
+import Contact from "../Contact/Contact";
 
 export default function ContactList() {
-  const items = useSelector(selectContacts);
-  const nameFilter = useSelector(selectNameFilter);
+  const filteredContacts = useSelector(selectFilteredContacts);
+  const isLoading = useSelector(selectLoading);
+  const error = useSelector(selectError);
+  const dispatch = useDispatch();
 
-  const filteredContacts = items.filter((item) =>
-    item.name.toLowerCase().includes(nameFilter)
-  );
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const onDeleteContact = (id) => {
+    dispatch(deleteContact(id));
+  };
 
   return (
-    <ul className={css.menuList}>
-      {filteredContacts.map((item) => (
-        <li className={css.item} key={item.id}>
-          <Contact item={item} />
-        </li>
-      ))}
-    </ul>
+    <>
+      {!filteredContacts?.length && !error && !isLoading && (
+        <b>No contacts found</b>
+      )}
+      {error && <b>{error}</b>}
+      <ul className={css.list}>
+        {filteredContacts.map((contact) => {
+          return (
+            <li key={contact.id} className={css.contactItem}>
+              <Contact
+                id={contact.id}
+                name={contact.name}
+                phone={contact.number}
+                onDelete={onDeleteContact}
+              />
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 }
