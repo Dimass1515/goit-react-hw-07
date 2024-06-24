@@ -1,19 +1,14 @@
-.contacts {
-  width: 90%;
-  width: 250px;
-  background-color: #fff;
-  padding: 20px 30px;
-  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-  border: 1px solid rgba(17, 12, 46, 0.15);
-  border-radius: 10px;
-}
-
-.name {
-  margin-left: 8px;
+.contactName {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 4px;
+  border: 1px solid gray;
+  border-radius: 8px;
 }
 
 .btn {
   margin-top: 5px;
+  margin-left: 15px;
   width: 100%;
   padding: 12px;
   border: none;
@@ -30,8 +25,6 @@
 .btn:hover {
   opacity: 0.7;
 }
-
-.icon {
-  display: flex;
-  margin-bottom: 4px;
+.contactNumber {
+  border-bottom: 2px solid gray;
 }
